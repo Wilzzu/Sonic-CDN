@@ -4,10 +4,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0D92F4',
-        secondary: '#FCA311',
+        primary: '#222222',
+        accent: '#0D92F4',
         warning: '#F95454',
         background: '#0E0E0E'
+      },
+      dropShadow: {
+        'centered-base': '0 0 10px var(--tw-shadow-color)',
+        'centered-lg': '0 0 16px var(--tw-shadow-color)',
+        'centered-xl': '0 0 24px var(--tw-shadow-color)',
+        'centered-2xl': '0 0 32px var(--tw-shadow-color)'
       },
       keyframes: {
         'spin-around': {

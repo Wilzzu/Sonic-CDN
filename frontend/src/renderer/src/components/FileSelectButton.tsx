@@ -1,15 +1,34 @@
-import { ChangeEvent, DragEvent, useEffect, useRef, useState } from 'react'
-import { uploadFile } from '../api/fileUploadAPI'
+import {
+  ChangeEvent,
+  Dispatch,
+  DragEvent,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { cn } from '../lib/utils'
 
-function FileUpload(): JSX.Element {
-  const [file, setFile] = useState<File | null>(null)
-  const [progress, setProgress] = useState<number>(0)
+type FileSelectButtonProps = {
+  file: File | null
+  setFile: Dispatch<SetStateAction<File | null>>
+  isUploading: boolean
+  fileUploaded: boolean
+}
+
+const FileSelectButton: FC<FileSelectButtonProps> = ({
+  file,
+  setFile,
+  isUploading,
+  fileUploaded
+}): JSX.Element => {
   const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleDrop = (e: DragEvent<HTMLDivElement>): void => {
+    if (isUploading) return
     e.preventDefault()
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setFile(e.dataTransfer.files[0])
@@ -17,31 +36,18 @@ function FileUpload(): JSX.Element {
   }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
+    if (isUploading) return
     e.preventDefault()
   }
 
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
-    }
+    if (isUploading) return
+    if (e.target.files && e.target.files[0]) setFile(e.target.files[0])
   }
 
-  const handleUpload = async (): Promise<void> => {
-    if (!file) return
-    setProgress(0)
-    try {
-      const response = await uploadFile(file, (progressEvent) => {
-        const total = progressEvent.total ?? 0
-        if (total > 0) {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / total)
-          setProgress(percentCompleted)
-        }
-      })
-
-      if (response.status === 200) console.log('File uploaded successfully')
-    } catch (error) {
-      console.error('Error uploading file:', error)
-    }
+  const handleDragState = (state: boolean): void => {
+    if (isUploading) return setIsDraggedOver(false)
+    setIsDraggedOver(state)
   }
 
   const createPreview = (file: File): void => {
@@ -59,10 +65,7 @@ function FileUpload(): JSX.Element {
   }
 
   useEffect(() => {
-    if (file) {
-      setProgress(0)
-      createPreview(file)
-    }
+    if (file) createPreview(file)
     setIsDraggedOver(false)
   }, [file])
 
@@ -74,19 +77,19 @@ function FileUpload(): JSX.Element {
         onClick={() => fileInputRef.current?.click()}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        onDragEnter={() => setIsDraggedOver(true)}
-        onDragLeave={() => setIsDraggedOver(false)}
+        onDragEnter={() => handleDragState(true)}
+        onDragLeave={() => handleDragState(false)}
         className="relative w-full flex items-center justify-center p-1 bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 rounded-2xl overflow-hidden hover:cursor-pointer"
       >
         {/* Button border */}
         <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
           <div
             className={cn(
-              'bg-gradient-to-r from-transparent via-primary to-transparent w-80 h-[300%]',
+              'bg-gradient-to-r from-transparent via-accent to-transparent w-80 h-[300%]',
               {
                 'animate-spin-slow': !isDraggedOver && !file,
-                'animate-spin-fast': isDraggedOver && !file,
-                'animate-pulse bg-primary/30 w-full': file
+                'animate-spin-fast': isDraggedOver,
+                'animate-pulse bg-accent/30 w-full': file && !isDraggedOver
               }
             )}
           />
@@ -95,8 +98,10 @@ function FileUpload(): JSX.Element {
         <div className="relative flex items-center justify-center bg-gradient-to-br from-background via-slate-900 to-background w-full h-64 rounded-[12px] z-[1] pointer-events-none overflow-hidden">
           {file?.name ? (
             <div className="z-[1] px-4 max-w-full">
-              <p className="text-center">Selected file:</p>
-              <div className="flex flex-col justify-center text-black py-2 px-8 bg-slate-200 rounded-full">
+              <p className="text-center">
+                {fileUploaded ? 'File uploaded!' : isUploading ? 'Uploading:' : 'Selected file:'}
+              </p>
+              <div className="flex flex-col justify-center text-black py-[6px] px-8 bg-slate-200 rounded-full">
                 <p className="truncate leading-5">{file.name}</p>
                 <p className="text-xs leading-3">{formatBytes(file.size)}</p>
               </div>
@@ -118,15 +123,8 @@ function FileUpload(): JSX.Element {
           )}
         </div>
       </div>
-      <button onClick={handleUpload} disabled={!file}>
-        Upload
-      </button>
-      <div>
-        <progress value={progress} max="100" />
-        <p>{progress}%</p>
-      </div>
     </>
   )
 }
 
-export default FileUpload
+export default FileSelectButton

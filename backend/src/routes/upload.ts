@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 		cb(null, process.env.CDN_DIR || "cdn/");
 	},
 	filename: (req, file, cb) => {
-		cb(null, `${Date.now()}-${file.originalname}`);
+		cb(null, file.originalname);
 	},
 });
 
