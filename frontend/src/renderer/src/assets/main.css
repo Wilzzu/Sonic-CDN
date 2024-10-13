@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add fonts from local */
+@font-face {
+  font-family: 'Jost';
+  src: url('./fonts/Jost-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Jost', sans-serif;
+  color: #f0f8ff;
+}
+
+.title-bar {
+  -webkit-app-region: drag;
+}
+
+.title-bar-button {
+  -webkit-app-region: no-drag;
+}
