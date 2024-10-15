@@ -46,7 +46,7 @@ router.post(
 
 		res.status(200).json({
 			message: "File uploaded successfully",
-			filePath: req.file.path,
+			fileName: req.file.originalname,
 		});
 	}
 );

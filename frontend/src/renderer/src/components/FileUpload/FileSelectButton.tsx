@@ -8,13 +8,13 @@ import {
   useRef,
   useState
 } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 type FileSelectButtonProps = {
   file: File | null
   setFile: Dispatch<SetStateAction<File | null>>
   isUploading: boolean
-  fileUploaded: boolean
+  fileUploaded: string | null
 }
 
 const FileSelectButton: FC<FileSelectButtonProps> = ({
@@ -74,12 +74,15 @@ const FileSelectButton: FC<FileSelectButtonProps> = ({
       <input ref={fileInputRef} type="file" onChange={handleFileSelect} className="hidden" />
       {/* Main button */}
       <div
-        onClick={() => fileInputRef.current?.click()}
+        onClick={() => !isUploading && fileInputRef.current?.click()}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragEnter={() => handleDragState(true)}
         onDragLeave={() => handleDragState(false)}
-        className="relative w-full flex items-center justify-center p-1 bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 rounded-2xl overflow-hidden hover:cursor-pointer"
+        className={cn(
+          'relative w-full flex items-center justify-center p-1 bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900 rounded-2xl overflow-hidden hover:cursor-pointer',
+          { 'hover:cursor-default': isUploading }
+        )}
       >
         {/* Button border */}
         <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
