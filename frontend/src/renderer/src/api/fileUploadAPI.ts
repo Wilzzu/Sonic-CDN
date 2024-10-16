@@ -1,8 +1,10 @@
 import axios, { AxiosProgressEvent, AxiosResponse } from 'axios'
+import { RefObject } from 'react'
 
-export const uploadFile = (
+export const uploadFile = async (
   file: File,
-  onProgress: (progressEvent: AxiosProgressEvent) => void
+  onProgress: (progressEvent: AxiosProgressEvent) => void,
+  controllerRef: RefObject<AbortController>
 ): Promise<AxiosResponse> => {
   const formData = new FormData()
   formData.append('file', file)
@@ -12,6 +14,7 @@ export const uploadFile = (
       'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${import.meta.env.VITE_PASSWORD}`
     },
-    onUploadProgress: onProgress
+    onUploadProgress: onProgress,
+    signal: controllerRef?.current?.signal
   })
 }

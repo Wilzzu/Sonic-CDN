@@ -1,6 +1,7 @@
 import { uploadFile } from '@renderer/api/fileUploadAPI'
 import { cn } from '@renderer/lib/utils'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { AxiosProgressEvent } from 'axios'
+import { Dispatch, FC, RefObject, SetStateAction } from 'react'
 
 type UploadButtonProps = {
   file: File | null
@@ -10,6 +11,7 @@ type UploadButtonProps = {
   setIsUploading: Dispatch<SetStateAction<boolean>>
   fileUploaded: string | null
   setFileUploaded: Dispatch<SetStateAction<string | null>>
+  controllerRef: RefObject<AbortController>
 }
 
 // Rename file and keep the file extension
@@ -26,20 +28,23 @@ const UploadButton: FC<UploadButtonProps> = ({
   isUploading,
   setIsUploading,
   fileUploaded,
-  setFileUploaded
+  setFileUploaded,
+  controllerRef
 }): JSX.Element => {
+  const onProgress = (progressEvent: AxiosProgressEvent): void => {
+    const total = progressEvent.total ?? 0
+    if (total > 0) {
+      const percentCompleted = Math.round((progressEvent.loaded * 100) / total)
+      setProgress(percentCompleted)
+    }
+  }
+
   const handleUpload = async (): Promise<void> => {
     if (!file) return
     setIsUploading(true)
     setProgress(0)
     try {
-      const response = await uploadFile(formatFile(file, fileName), (progressEvent) => {
-        const total = progressEvent.total ?? 0
-        if (total > 0) {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / total)
-          setProgress(percentCompleted)
-        }
-      })
+      const response = await uploadFile(formatFile(file, fileName), onProgress, controllerRef)
 
       if (response.status === 200) {
         console.log('File uploaded successfully:', response.data)
@@ -63,9 +68,13 @@ const UploadButton: FC<UploadButtonProps> = ({
       <button
         onClick={handleUpload}
         disabled={isUploading || !file || !!fileUploaded}
-        className="w-full h-full bg-gradient-to-b from-primary to-primary/70 rounded-md disabled:opacity-50 disabled:hover:opacity-50 shadow-accent/20 disabled:hover:drop-shadow-none hover:drop-shadow-centered-base border-2 border-accent/80 hover:border-accent duration-200"
+        className="group w-full h-full p-[1px] rounded-[7px] bg-gradient-to-br disabled:bg-none from-accent/50 via-accent/10 to-accent/50 disabled:opacity-50 disabled:hover:opacity-50 shadow-accent/50 disabled:hover:drop-shadow-none hover:drop-shadow-centered-base duration-200"
       >
-        <p className="uppercase text-sm pointer-events-none">Upload</p>
+        <div className="w-full h-full flex items-center justify-center bg-primary/80 group-hover:bg-accent/10 group-disabled:group-hover:bg-primary/80 rounded-md duration-200">
+          <p className="uppercase text-sm pointer-events-none shadow-black/40 drop-shadow-text">
+            Upload
+          </p>
+        </div>
       </button>
     </div>
   )
