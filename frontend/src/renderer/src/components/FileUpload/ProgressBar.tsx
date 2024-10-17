@@ -2,6 +2,7 @@ import { Dispatch, FC, ReactNode, RefObject, SetStateAction } from 'react'
 import copyIcon from '../../assets/copy-icon.svg'
 import externalLinkIcon from '../../assets/external-link-icon.svg'
 import closeIcon from '../../assets/close-icon.svg'
+import { cn } from '@renderer/lib/utils'
 
 type ProgressBarProps = {
   progress: number
@@ -31,10 +32,11 @@ const ProgressBar: FC<ProgressBarProps> = ({
   controllerRef
 }): JSX.Element => {
   const handleClose = (): void => {
-    setFile(null)
-
     // Close the progress bar
-    if (!isUploading) return setFileUploadCancelled(false)
+    if (!isUploading) {
+      setFile(null)
+      return setFileUploadCancelled(false)
+    }
 
     // If file is uploading, cancel the upload
     controllerRef?.current?.abort()
@@ -59,7 +61,12 @@ const ProgressBar: FC<ProgressBarProps> = ({
       </p>
       <div className="flex items-center justify-center gap-2">
         {/* Progress bar */}
-        <div className="relative flex items-center justify-center w-full bg-secondary h-3 rounded-full overflow-hidden">
+        <div
+          className={cn(
+            'relative flex items-center justify-center w-full bg-gradient-to-br from-secondary to-secondary/80 h-3 rounded-full overflow-hidden',
+            { 'from-warning to-warning/85': fileUploadCancelled }
+          )}
+        >
           <div
             style={{ width: `${progress}%` }}
             className="absolute left-0 h-full bg-gradient-to-br from-accent to-[#39A4F4] rounded-full duration-500"

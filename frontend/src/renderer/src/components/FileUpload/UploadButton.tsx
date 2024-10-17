@@ -11,6 +11,7 @@ type UploadButtonProps = {
   setIsUploading: Dispatch<SetStateAction<boolean>>
   fileUploaded: string | null
   setFileUploaded: Dispatch<SetStateAction<string | null>>
+  setFileUploadCancelled: Dispatch<SetStateAction<boolean>>
   controllerRef: RefObject<AbortController>
 }
 
@@ -29,6 +30,7 @@ const UploadButton: FC<UploadButtonProps> = ({
   setIsUploading,
   fileUploaded,
   setFileUploaded,
+  setFileUploadCancelled,
   controllerRef
 }): JSX.Element => {
   const onProgress = (progressEvent: AxiosProgressEvent): void => {
@@ -43,6 +45,7 @@ const UploadButton: FC<UploadButtonProps> = ({
     if (!file) return
     setIsUploading(true)
     setProgress(0)
+    setFileUploadCancelled(false)
     try {
       const response = await uploadFile(formatFile(file, fileName), onProgress, controllerRef)
 

@@ -53,6 +53,7 @@ const FileUpload: FC<FileUploadProps> = ({ isUploading, setIsUploading }): JSX.E
           setIsUploading={setIsUploading}
           fileUploaded={fileUploaded}
           setFileUploaded={setFileUploaded}
+          setFileUploadCancelled={setFileUploadCancelled}
           controllerRef={controllerRef}
         />
       </div>
