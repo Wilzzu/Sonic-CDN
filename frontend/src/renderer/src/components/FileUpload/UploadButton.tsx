@@ -17,9 +17,14 @@ type UploadButtonProps = {
 
 // Rename file and keep the file extension
 const formatFile = (file: File, fileName: string | null): File => {
-  if (!fileName) return new File([file], encodeURI(file.name.replaceAll(' ', '-')))
+  const originalFileName = fileName ? fileName.toLocaleLowerCase() : file.name.toLocaleLowerCase()
+  const formattedFileName = encodeURI(
+    originalFileName.replace(/ /g, '-').replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/å/g, 'a')
+  )
+
+  if (!fileName) return new File([file], formattedFileName)
   const extension = file.name.split('.').pop()
-  return new File([file], `${encodeURI(fileName.replaceAll(' ', '-'))}.${extension}`)
+  return new File([file], `${formattedFileName}.${extension}`)
 }
 
 const UploadButton: FC<UploadButtonProps> = ({

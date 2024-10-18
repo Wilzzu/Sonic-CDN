@@ -71,7 +71,13 @@ const FileSelectButton: FC<FileSelectButtonProps> = ({
 
   return (
     <>
-      <input ref={fileInputRef} type="file" onChange={handleFileSelect} className="hidden" />
+      <input
+        ref={fileInputRef}
+        type="file"
+        onChange={handleFileSelect}
+        onClick={(e) => (e.currentTarget.value = '')}
+        className="hidden"
+      />
       {/* Main button */}
       <div
         onClick={() => !isUploading && fileInputRef.current?.click()}
