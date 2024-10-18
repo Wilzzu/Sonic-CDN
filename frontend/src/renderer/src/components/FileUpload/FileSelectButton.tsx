@@ -107,10 +107,10 @@ const FileSelectButton: FC<FileSelectButtonProps> = ({
         <div className="relative flex items-center justify-center bg-gradient-to-br from-background via-slate-900 to-background w-full h-64 rounded-[12px] z-[1] pointer-events-none overflow-hidden">
           {file?.name ? (
             <div className="z-[1] px-4 max-w-full">
-              <p className="text-center">
+              <p>
                 {fileUploaded ? 'File uploaded!' : isUploading ? 'Uploading:' : 'Selected file:'}
               </p>
-              <div className="flex flex-col justify-center text-black py-[6px] px-8 bg-slate-200 rounded-full">
+              <div className="flex flex-col justify-center text-black py-[6px] px-8 bg-gradient-to-b from-stone-200 via-stone-300 via-80% to-[#9c9a99] shadow-white/25 drop-shadow-centered-xl rounded-lg">
                 <p className="truncate leading-5">{file.name}</p>
                 <p className="text-xs leading-3">{formatBytes(file.size)}</p>
               </div>

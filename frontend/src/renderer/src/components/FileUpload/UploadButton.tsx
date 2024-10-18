@@ -58,7 +58,11 @@ const UploadButton: FC<UploadButtonProps> = ({
         console.log('File uploaded successfully:', response.data)
         setIsUploading(false)
         setProgress(100)
-        setFileUploaded(response.data.fileName)
+        setFileUploaded(`${import.meta.env.VITE_CDN_URL}/${response.data.fileName}`)
+        window.electron.ipcRenderer.send(
+          'copy-to-clipboard',
+          `${import.meta.env.VITE_CDN_URL}/${response.data.fileName}`
+        )
       }
     } catch (error) {
       console.error('Error uploading file:', error)

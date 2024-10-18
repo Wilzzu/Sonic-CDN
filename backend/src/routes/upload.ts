@@ -22,23 +22,8 @@ const storage = diskStorage({
 	},
 	filename: (req, file, cb) => {
 		// Remove file extension from original name, add UUID, and add file extension back
-		const uuid = uuidv4().split("-")[0];
-		const customUUID =
-			uuid[0] +
-			"w" +
-			uuid[1] +
-			"i" +
-			uuid[2] +
-			"l" +
-			uuid[3] +
-			"z" +
-			uuid[4] +
-			"z" +
-			uuid[5] +
-			"u" +
-			uuid[6];
-
-		const fileName = `${path.parse(file.originalname).name}-${customUUID}${
+		const uuid = "w" + uuidv4().split("-")[0].slice(0, 7);
+		const fileName = `${path.parse(file.originalname).name}-${uuid}${
 			path.parse(file.originalname).ext
 		}`;
 		cb(null, fileName);

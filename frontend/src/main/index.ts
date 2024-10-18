@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, clipboard } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -63,6 +63,10 @@ app.whenReady().then(() => {
 
   ipcMain.on('minimize-app', () => {
     if (mainWindow) mainWindow.minimize()
+  })
+
+  ipcMain.on('copy-to-clipboard', (_, text: string) => {
+    clipboard.writeText(text)
   })
 
   createWindow()

@@ -62,6 +62,7 @@ const FileUpload: FC<FileUploadProps> = ({ isUploading, setIsUploading }): JSX.E
           progress={progress}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
+          fileUploaded={fileUploaded}
           fileUploadCancelled={fileUploadCancelled}
           setFileUploadCancelled={setFileUploadCancelled}
           setFile={setFile}
