@@ -116,7 +116,7 @@ const FileSelectButton: FC<FileSelectButtonProps> = ({
               </div>
             </div>
           ) : (
-            <p>Drop your file or click here to upload</p>
+            <p className="select-none">Drop your file or click here to upload</p>
           )}
           {/* File preview */}
           {previewUrl && (

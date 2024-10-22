@@ -1,4 +1,5 @@
 import { uploadFile } from '@renderer/api/fileUploadAPI'
+import useFileHistory from '@renderer/hooks/useFileHistory'
 import { cn } from '@renderer/lib/utils'
 import { AxiosProgressEvent } from 'axios'
 import { Dispatch, FC, RefObject, SetStateAction } from 'react'
@@ -38,6 +39,8 @@ const UploadButton: FC<UploadButtonProps> = ({
   setFileUploadCancelled,
   controllerRef
 }): JSX.Element => {
+  const { addFileToHistory } = useFileHistory()
+
   const onProgress = (progressEvent: AxiosProgressEvent): void => {
     const total = progressEvent.total ?? 0
     if (total > 0) {
@@ -63,6 +66,7 @@ const UploadButton: FC<UploadButtonProps> = ({
           'copy-to-clipboard',
           `${import.meta.env.VITE_CDN_URL}/${response.data.fileName}`
         )
+        addFileToHistory(response.data.fileName)
       }
     } catch (error) {
       console.error('Error uploading file:', error)

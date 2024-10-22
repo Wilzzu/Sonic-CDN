@@ -13,8 +13,8 @@ function App(): JSX.Element {
       <TitleBar setShowHistory={setShowHistory} isUploading={isUploading} />
       <main className="relative h-[calc(100dvh-48px)] flex flex-col items-center gap-10">
         {/* Title */}
-        <div className="flex items-center justify-center gap-3 mt-6 mb-4">
-          <img src={icon} alt="Sonic CDN Icon" className="h-12 w-auto mb-[1px]" />
+        <div className="flex items-center justify-center gap-3 mt-6 mb-4 select-none">
+          <img src={icon} draggable={false} alt="Sonic CDN Icon" className="h-12 w-auto mb-[1px]" />
           <h1 className="uppercase text-nowrap font-bold text-3xl">Sonic CDN</h1>
         </div>
         {/* Content */}

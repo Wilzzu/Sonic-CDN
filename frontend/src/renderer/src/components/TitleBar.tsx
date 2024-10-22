@@ -40,20 +40,20 @@ type TitleBarProps = {
 
 const TitleBar: FC<TitleBarProps> = ({ setShowHistory, isUploading }): JSX.Element => {
   return (
-    <nav className="w-full flex items-center justify-between p-2 title-bar">
+    <nav className="w-full flex items-center justify-between p-2 title-bar select-none">
       <TitleButton
         onClick={() => setShowHistory((prev) => !prev)}
         background
         disabled={isUploading}
       >
-        <img src={historyIcon} alt="History icon" className="h-2/3 w-auto" />
+        <img src={historyIcon} draggable={false} alt="History icon" className="h-2/3 w-auto" />
       </TitleButton>
       <div className="flex gap-2">
         <TitleButton onClick={() => window.electron.ipcRenderer.send('minimize-app')}>
-          <img src={minimizeIcon} alt="Minimize icon" className="h-1/2 w-auto" />
+          <img src={minimizeIcon} draggable={false} alt="Minimize icon" className="h-1/2 w-auto" />
         </TitleButton>
         <TitleButton onClick={() => window.electron.ipcRenderer.send('close-app')}>
-          <img src={closeIcon} alt="Close icon" className="h-1/2 w-auto" />
+          <img src={closeIcon} draggable={false} alt="Close icon" className="h-1/2 w-auto" />
         </TitleButton>
       </div>
     </nav>
