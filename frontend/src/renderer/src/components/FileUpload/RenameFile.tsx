@@ -2,13 +2,14 @@ import { cn } from '@renderer/lib/utils'
 import { Dispatch, FC, MouseEvent, RefObject, SetStateAction, useRef } from 'react'
 import randomizeIcon from '@renderer/assets/refresh-icon.svg'
 import { v4 as uuidv4 } from 'uuid'
+import { UploadedFile } from 'src/types/types'
 
 type RenameFileProps = {
   file: File | null
   fileName: string
   setFileName: Dispatch<SetStateAction<string>>
   isUploading: boolean
-  fileUploaded: string | null
+  fileUploaded: UploadedFile | null
 }
 
 const randomName = (): string => {

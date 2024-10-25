@@ -8,13 +8,14 @@ import {
   useRef,
   useState
 } from 'react'
-import { cn } from '../../lib/utils'
+import { cn, formatBytes } from '../../lib/utils'
+import { UploadedFile } from 'src/types/types'
 
 type FileSelectButtonProps = {
   file: File | null
   setFile: Dispatch<SetStateAction<File | null>>
   isUploading: boolean
-  fileUploaded: string | null
+  fileUploaded: UploadedFile | null
 }
 
 const FileSelectButton: FC<FileSelectButtonProps> = ({
@@ -54,14 +55,6 @@ const FileSelectButton: FC<FileSelectButtonProps> = ({
     const reader = new FileReader()
     reader.onload = (): void => setPreviewUrl(reader.result as string)
     reader.readAsDataURL(file) // Read the file as a data URL
-  }
-
-  const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
   useEffect(() => {

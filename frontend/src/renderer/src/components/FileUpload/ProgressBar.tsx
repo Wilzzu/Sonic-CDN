@@ -3,12 +3,13 @@ import copyIcon from '../../assets/copy-icon.svg'
 import externalLinkIcon from '../../assets/external-link-icon.svg'
 import closeIcon from '../../assets/close-icon.svg'
 import ProgressButton from '../global/ProgressButton'
+import { UploadedFile } from 'src/types/types'
 
 type ProgressBarProps = {
   progress: number
   isUploading: boolean
   setIsUploading: Dispatch<SetStateAction<boolean>>
-  fileUploaded: string | null
+  fileUploaded: UploadedFile | null
   fileUploadCancelled: boolean
   setFileUploadCancelled: Dispatch<SetStateAction<boolean>>
   setFile: Dispatch<SetStateAction<File | null>>
@@ -79,7 +80,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           {/* Link button */}
           <ProgressButton
             disabled={!fileUploaded}
-            onClick={() => window.open(fileUploaded!)}
+            onClick={() => window.open(fileUploaded?.url)}
             title="Open"
             tooltip
           >
@@ -93,7 +94,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
           {/* Copy button */}
           <ProgressButton
             disabled={!fileUploaded}
-            onClick={() => window.electron.ipcRenderer.send('copy-to-clipboard', fileUploaded)}
+            onClick={() => window.electron.ipcRenderer.send('copy-to-clipboard', fileUploaded?.url)}
             title="Copy"
             tooltip
           >

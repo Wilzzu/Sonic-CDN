@@ -3,6 +3,7 @@ import useFileHistory from '@renderer/hooks/useFileHistory'
 import { cn } from '@renderer/lib/utils'
 import { AxiosProgressEvent } from 'axios'
 import { Dispatch, FC, RefObject, SetStateAction } from 'react'
+import { UploadedFile } from 'src/types/types'
 
 type UploadButtonProps = {
   file: File | null
@@ -10,8 +11,8 @@ type UploadButtonProps = {
   setProgress: Dispatch<SetStateAction<number>>
   isUploading: boolean
   setIsUploading: Dispatch<SetStateAction<boolean>>
-  fileUploaded: string | null
-  setFileUploaded: Dispatch<SetStateAction<string | null>>
+  fileUploaded: UploadedFile | null
+  setFileUploaded: Dispatch<SetStateAction<UploadedFile | null>>
   setFileUploadCancelled: Dispatch<SetStateAction<boolean>>
   controllerRef: RefObject<AbortController>
 }
@@ -61,12 +62,14 @@ const UploadButton: FC<UploadButtonProps> = ({
         console.log('File uploaded successfully:', response.data)
         setIsUploading(false)
         setProgress(100)
-        setFileUploaded(`${import.meta.env.VITE_CDN_URL}/${response.data.fileName}`)
-        window.electron.ipcRenderer.send(
-          'copy-to-clipboard',
-          `${import.meta.env.VITE_CDN_URL}/${response.data.fileName}`
-        )
-        addFileToHistory(response.data.fileName)
+        const uploadedFile = {
+          name: response.data.uploadedFile.fileName,
+          url: `${import.meta.env.VITE_CDN_URL}/${response.data.uploadedFile.fileName}`,
+          size: response.data.uploadedFile.fileSize
+        }
+        setFileUploaded(uploadedFile)
+        addFileToHistory(uploadedFile)
+        window.electron.ipcRenderer.send('copy-to-clipboard', uploadedFile.url)
       }
     } catch (error) {
       console.error('Error uploading file:', error)

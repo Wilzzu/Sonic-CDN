@@ -3,6 +3,7 @@ import ProgressBar from '@renderer/components/FileUpload/ProgressBar'
 import RenameFile from '@renderer/components/FileUpload/RenameFile'
 import UploadButton from '@renderer/components/FileUpload/UploadButton'
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react'
+import { UploadedFile } from 'src/types/types'
 
 type FileUploadProps = {
   isUploading: boolean
@@ -13,7 +14,7 @@ const FileUpload: FC<FileUploadProps> = ({ isUploading, setIsUploading }): JSX.E
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState<number>(0)
   const [fileName, setFileName] = useState<string>('')
-  const [fileUploaded, setFileUploaded] = useState<string | null>(null)
+  const [fileUploaded, setFileUploaded] = useState<UploadedFile | null>(null)
   const [fileUploadCancelled, setFileUploadCancelled] = useState<boolean>(false)
   const controllerRef = useRef(new AbortController())
 

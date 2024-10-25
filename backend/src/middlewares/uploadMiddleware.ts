@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response, Router } from "express";
 import multer, { diskStorage } from "multer";
 import { configDotenv } from "dotenv";
 import path from "path";
@@ -6,8 +5,6 @@ import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
 configDotenv();
-
-const router = Router();
 
 // Make sure the CDN directory exists
 const uploadsDir = path.join(__dirname, process.env.CDN_DIR || "cdn/");
@@ -43,31 +40,4 @@ const storage = diskStorage({
 	},
 });
 const upload = multer({ storage });
-
-// Middleware to check for password
-const checkPassword = (req: Request, res: Response, next: NextFunction) => {
-	const password = req.headers.authorization?.split(" ")[1];
-	if (password === process.env.PASSWORD) next();
-	else res.status(401).send("Unauthorized");
-};
-
-// File upload endpoint
-router.post(
-	"/upload",
-	checkPassword,
-	upload.single("file"),
-	(req: Request, res: Response): void => {
-		// This triggers after file has been uploaded
-		if (!req.file) {
-			res.status(400).send("No file uploaded");
-			return;
-		}
-
-		res.status(200).json({
-			message: "File uploaded successfully",
-			fileName: req.file.filename,
-		});
-	}
-);
-
-export default router;
+export default upload;

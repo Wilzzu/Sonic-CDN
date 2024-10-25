@@ -1,14 +1,16 @@
+import { UploadedFile } from 'src/types/types'
+
 const useFileHistory = (): {
-  getFileHistory: () => string[]
-  addFileToHistory: (fileUrl: string) => void
+  getFileHistory: () => UploadedFile[]
+  addFileToHistory: (file: UploadedFile) => void
 } => {
-  const getFileHistory = (): string[] => {
+  const getFileHistory = (): UploadedFile[] => {
     return JSON.parse(localStorage.getItem('fileHistory') || '[]')
   }
 
-  const addFileToHistory = (fileUrl: string): void => {
+  const addFileToHistory = (file: UploadedFile): void => {
     const fileHistory = getFileHistory()
-    fileHistory.push(fileUrl)
+    fileHistory.push(file)
     localStorage.setItem('fileHistory', JSON.stringify(fileHistory))
   }
 
