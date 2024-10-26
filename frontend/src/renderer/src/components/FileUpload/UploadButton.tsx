@@ -1,7 +1,7 @@
-import { uploadFile } from '@renderer/api/fileUploadAPI'
+import { uploadFile } from '@renderer/api/uploadAPI'
 import useFileHistory from '@renderer/hooks/useFileHistory'
 import { cn } from '@renderer/lib/utils'
-import { AxiosProgressEvent } from 'axios'
+import { AxiosError, AxiosProgressEvent } from 'axios'
 import { Dispatch, FC, RefObject, SetStateAction } from 'react'
 import { UploadedFile } from 'src/types/types'
 
@@ -14,6 +14,8 @@ type UploadButtonProps = {
   fileUploaded: UploadedFile | null
   setFileUploaded: Dispatch<SetStateAction<UploadedFile | null>>
   setFileUploadCancelled: Dispatch<SetStateAction<boolean>>
+  setFileUploadError: Dispatch<SetStateAction<false | string>>
+  updateStorageSpace: () => Promise<void>
   controllerRef: RefObject<AbortController>
 }
 
@@ -38,6 +40,8 @@ const UploadButton: FC<UploadButtonProps> = ({
   fileUploaded,
   setFileUploaded,
   setFileUploadCancelled,
+  setFileUploadError,
+  updateStorageSpace,
   controllerRef
 }): JSX.Element => {
   const { addFileToHistory } = useFileHistory()
@@ -55,6 +59,7 @@ const UploadButton: FC<UploadButtonProps> = ({
     setIsUploading(true)
     setProgress(0)
     setFileUploadCancelled(false)
+    setFileUploadError(false)
     try {
       const response = await uploadFile(formatFile(file, fileName), onProgress, controllerRef)
 
@@ -69,10 +74,13 @@ const UploadButton: FC<UploadButtonProps> = ({
         }
         setFileUploaded(uploadedFile)
         addFileToHistory(uploadedFile)
+        updateStorageSpace()
         window.electron.ipcRenderer.send('copy-to-clipboard', uploadedFile.url)
       }
     } catch (error) {
-      console.error('Error uploading file:', error)
+      setFileUploadError(
+        ((error as AxiosError).response?.data as string) || (error as Error).message
+      )
       setIsUploading(false)
       setProgress(0)
     }

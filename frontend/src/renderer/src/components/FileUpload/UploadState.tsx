@@ -4,25 +4,28 @@ import externalLinkIcon from '../../assets/external-link-icon.svg'
 import closeIcon from '../../assets/close-icon.svg'
 import ProgressButton from '../global/ProgressButton'
 import { UploadedFile } from 'src/types/types'
+import ProgressBar from '../global/ProgressBar'
 
-type ProgressBarProps = {
+type UploadStateProps = {
   progress: number
   isUploading: boolean
   setIsUploading: Dispatch<SetStateAction<boolean>>
   fileUploaded: UploadedFile | null
   fileUploadCancelled: boolean
   setFileUploadCancelled: Dispatch<SetStateAction<boolean>>
+  fileUploadError: false | string
   setFile: Dispatch<SetStateAction<File | null>>
   controllerRef: RefObject<AbortController>
 }
 
-const ProgressBar: FC<ProgressBarProps> = ({
+const UploadState: FC<UploadStateProps> = ({
   progress,
   isUploading,
   setIsUploading,
   fileUploaded,
   fileUploadCancelled,
   setFileUploadCancelled,
+  fileUploadError,
   setFile,
   controllerRef
 }): JSX.Element => {
@@ -38,6 +41,13 @@ const ProgressBar: FC<ProgressBarProps> = ({
     setIsUploading(false)
     setFileUploadCancelled(true)
   }
+
+  if (fileUploadError)
+    return (
+      <div className="relative w-full flex flex-col mt-4 border-2 border-warning bg-gradient-to-br from-primary to-primary/70 rounded-md p-3 text-sm text-center">
+        <p>Error: {fileUploadError}</p>
+      </div>
+    )
 
   return (
     <div className="relative w-full flex flex-col mt-4 bg-gradient-to-br from-primary to-primary/70 rounded-md p-3 text-[0.8rem] text-white/90">
@@ -66,14 +76,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
             (progress < 5 ? 'overflow-hidden' : ' ')
           }
         >
-          <div
-            style={{ width: `${progress}%` }}
-            className={
-              'absolute left-0 h-full bg-gradient-to-br from-accent to-[#39A4F4] rounded-full shadow-centered-base duration-500 ' +
-              (progress >= 5 ? 'shadow-accent/50' : 'shadow-accent/0')
-            }
-          />
-          <p className="text-[0.60rem] shadow-black/40 drop-shadow-text z-[1]">{progress}%</p>
+          <ProgressBar progress={progress} showPercentage />
         </div>
         {/* Buttons */}
         <div className="flex gap-1">
@@ -106,4 +109,4 @@ const ProgressBar: FC<ProgressBarProps> = ({
   )
 }
 
-export default ProgressBar
+export default UploadState

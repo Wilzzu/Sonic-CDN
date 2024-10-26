@@ -4,6 +4,7 @@ import fileRoutes from "./routes/fileRoutes";
 import storageRoutes from "./routes/storageRoutes";
 import { configDotenv } from "dotenv";
 import cors from "cors";
+import { authenticate } from "./middlewares/authMiddleware";
 
 configDotenv();
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(authenticate);
 
 // Routes
 app.use("/api/upload", uploadRoutes);

@@ -14,6 +14,15 @@ export async function renameFile(oldName: string, newName: string): Promise<void
 }
 
 export async function deleteFile(fileName: string): Promise<void> {
+	// Check if the file exists
+	const filePath = path.join(uploadsDir, fileName);
+	try {
+		await fs.access(filePath);
+	} catch (error) {
+		throw new Error("File doesn't exist on CDN or you don't have permission to delete it");
+	}
+
+	// Delete the file
 	try {
 		const filePath = path.join(uploadsDir, fileName);
 		await fs.unlink(filePath);

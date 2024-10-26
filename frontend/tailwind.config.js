@@ -29,11 +29,16 @@ module.exports = {
         'spin-around': {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' }
+        },
+        'slide-from-right': {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' }
         }
       },
       animation: {
         'spin-fast': 'spin-around 1.5s linear infinite',
-        'spin-slow': 'spin-around 6s linear infinite'
+        'spin-slow': 'spin-around 6s linear infinite',
+        'slide-from-right': 'slide-from-right 0.2s ease-out'
       }
     }
   },

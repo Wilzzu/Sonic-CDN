@@ -3,3 +3,8 @@ export type UploadedFile = {
   url: string
   size: number
 }
+
+export type StorageResponse = {
+  storageSpaceLeft: number
+  storageSize: number
+}

@@ -3,6 +3,7 @@ import { UploadedFile } from 'src/types/types'
 const useFileHistory = (): {
   getFileHistory: () => UploadedFile[]
   addFileToHistory: (file: UploadedFile) => void
+  removeFileFromHistory: (fileName: string) => void
 } => {
   const getFileHistory = (): UploadedFile[] => {
     return JSON.parse(localStorage.getItem('fileHistory') || '[]')
@@ -14,7 +15,13 @@ const useFileHistory = (): {
     localStorage.setItem('fileHistory', JSON.stringify(fileHistory))
   }
 
-  return { getFileHistory, addFileToHistory }
+  const removeFileFromHistory = (fileName: string): void => {
+    const fileHistory = getFileHistory()
+    const newFileHistory = fileHistory.filter((file) => file.name !== fileName)
+    localStorage.setItem('fileHistory', JSON.stringify(newFileHistory))
+  }
+
+  return { getFileHistory, addFileToHistory, removeFileFromHistory }
 }
 
 export default useFileHistory

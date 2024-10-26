@@ -3,10 +3,13 @@ import icon from './assets/icon.svg'
 import TitleBar from './components/TitleBar'
 import FileUpload from './screens/FileUpload'
 import History from './screens/History'
+import Footer from './components/layout/Footer/Footer'
+import useStorageSpace from './hooks/useStorageSpace'
 
 function App(): JSX.Element {
   const [showHistory, setShowHistory] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)
+  const { storageResponse, updateStorageSpace } = useStorageSpace()
 
   return (
     <div className="rounded-xl overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1b1b1b]  to-background">
@@ -21,19 +24,13 @@ function App(): JSX.Element {
         {showHistory ? (
           <History />
         ) : (
-          <FileUpload isUploading={isUploading} setIsUploading={setIsUploading} />
+          <FileUpload
+            isUploading={isUploading}
+            setIsUploading={setIsUploading}
+            updateStorageSpace={updateStorageSpace}
+          />
         )}
-        {/* Footer */}
-        <footer className="absolute bottom-3 flex items-center justify-center gap-2">
-          <a
-            href="https://wilzzu.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs opacity-70 hover:opacity-100 duration-200"
-          >
-            Made with 💙 by Wilzzu
-          </a>
-        </footer>
+        <Footer storageResponse={storageResponse} />
       </main>
     </div>
   )

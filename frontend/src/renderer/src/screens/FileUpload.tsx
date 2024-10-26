@@ -1,5 +1,5 @@
 import FileSelectButton from '@renderer/components/FileUpload/FileSelectButton'
-import ProgressBar from '@renderer/components/FileUpload/ProgressBar'
+import UploadState from '@renderer/components/FileUpload/UploadState'
 import RenameFile from '@renderer/components/FileUpload/RenameFile'
 import UploadButton from '@renderer/components/FileUpload/UploadButton'
 import { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react'
@@ -8,14 +8,20 @@ import { UploadedFile } from 'src/types/types'
 type FileUploadProps = {
   isUploading: boolean
   setIsUploading: Dispatch<SetStateAction<boolean>>
+  updateStorageSpace: () => Promise<void>
 }
 
-const FileUpload: FC<FileUploadProps> = ({ isUploading, setIsUploading }): JSX.Element => {
+const FileUpload: FC<FileUploadProps> = ({
+  isUploading,
+  setIsUploading,
+  updateStorageSpace
+}): JSX.Element => {
   const [file, setFile] = useState<File | null>(null)
   const [progress, setProgress] = useState<number>(0)
   const [fileName, setFileName] = useState<string>('')
   const [fileUploaded, setFileUploaded] = useState<UploadedFile | null>(null)
   const [fileUploadCancelled, setFileUploadCancelled] = useState<boolean>(false)
+  const [fileUploadError, setFileUploadError] = useState<false | string>(false)
   const controllerRef = useRef(new AbortController())
 
   useEffect(() => {
@@ -55,17 +61,20 @@ const FileUpload: FC<FileUploadProps> = ({ isUploading, setIsUploading }): JSX.E
           fileUploaded={fileUploaded}
           setFileUploaded={setFileUploaded}
           setFileUploadCancelled={setFileUploadCancelled}
+          setFileUploadError={setFileUploadError}
+          updateStorageSpace={updateStorageSpace}
           controllerRef={controllerRef}
         />
       </div>
-      {(isUploading || fileUploaded || fileUploadCancelled) && (
-        <ProgressBar
+      {(isUploading || fileUploaded || fileUploadCancelled || fileUploadError) && (
+        <UploadState
           progress={progress}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
           fileUploaded={fileUploaded}
           fileUploadCancelled={fileUploadCancelled}
           setFileUploadCancelled={setFileUploadCancelled}
+          fileUploadError={fileUploadError}
           setFile={setFile}
           controllerRef={controllerRef}
         />

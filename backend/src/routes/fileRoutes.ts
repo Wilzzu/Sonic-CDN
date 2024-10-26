@@ -7,15 +7,15 @@ const router = Router();
 router.put("/rename", async (req: Request, res: Response): Promise<void> => {
 	const { oldName, newName } = req.body;
 	if (!oldName || !newName) {
-		res.status(400).json({ message: "Both oldName and newName are required" });
+		res.status(400).json("Both oldName and newName are required");
 		return;
 	}
 
 	try {
 		await renameFile(oldName, newName);
-		res.status(200).json({ message: "File renamed successfully" });
+		res.status(200).json("File renamed successfully");
 	} catch (error) {
-		res.status(500).json({ message: (error as Error).message });
+		res.status(500).json((error as Error).message);
 	}
 });
 
@@ -23,15 +23,15 @@ router.put("/rename", async (req: Request, res: Response): Promise<void> => {
 router.delete("/delete", async (req: Request, res: Response): Promise<void> => {
 	const { fileName } = req.body;
 	if (!fileName) {
-		res.status(400).json({ message: "File name is required" });
+		res.status(400).json("File name is required");
 		return;
 	}
 
 	try {
 		await deleteFile(fileName);
-		res.status(200).json({ message: "File deleted successfully" });
+		res.status(200).json("File deleted successfully");
 	} catch (error) {
-		res.status(500).json({ message: (error as Error).message });
+		res.status(500).json((error as Error).message);
 	}
 });
 
