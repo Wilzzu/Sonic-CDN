@@ -2,7 +2,12 @@ import { FC } from 'react'
 import HistoryItem from './HistoryItem'
 import { UploadedFile } from 'src/types/types'
 
-const HistoryFileList: FC<{ files: UploadedFile[] }> = ({ files }): JSX.Element => {
+type HistoryFileListProps = {
+  files: UploadedFile[]
+  updateStorageSpace: () => Promise<void>
+}
+
+const HistoryFileList: FC<HistoryFileListProps> = ({ files, updateStorageSpace }): JSX.Element => {
   if (files.length === 0) return <p className="pt-2">No files uploaded</p>
 
   return (
@@ -12,7 +17,7 @@ const HistoryFileList: FC<{ files: UploadedFile[] }> = ({ files }): JSX.Element 
         {[...files].reverse().map((file, index) => {
           return (
             <li key={file.name}>
-              <HistoryItem file={file} index={index} />
+              <HistoryItem file={file} index={index} updateStorageSpace={updateStorageSpace} />
             </li>
           )
         })}

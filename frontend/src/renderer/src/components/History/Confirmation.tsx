@@ -7,6 +7,7 @@ import { Dispatch, FC, SetStateAction, useState } from 'react'
 type ConfirmationProps = {
   fileName: string
   setIsDeleted: Dispatch<SetStateAction<boolean>>
+  updateStorageSpace: () => Promise<void>
 }
 
 type ConfirmationButtonProps = {
@@ -35,7 +36,7 @@ const ConfirmationButton: FC<ConfirmationButtonProps> = ({
   </button>
 )
 
-const Confirmation: FC<ConfirmationProps> = ({ fileName, setIsDeleted }) => {
+const Confirmation: FC<ConfirmationProps> = ({ fileName, setIsDeleted, updateStorageSpace }) => {
   const { removeFileFromHistory } = useFileHistory()
   const [status, setStatus] = useState<null | { msg: string; err?: boolean }>(null)
 
@@ -50,6 +51,7 @@ const Confirmation: FC<ConfirmationProps> = ({ fileName, setIsDeleted }) => {
       await deleteFile(fileName)
       removeFileFromHistory(fileName)
       setIsDeleted(true)
+      updateStorageSpace()
     } catch (error) {
       setStatus({
         msg: `Error: ${

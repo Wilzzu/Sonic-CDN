@@ -78,11 +78,12 @@ const UploadButton: FC<UploadButtonProps> = ({
         window.electron.ipcRenderer.send('copy-to-clipboard', uploadedFile.url)
       }
     } catch (error) {
-      setFileUploadError(
-        ((error as AxiosError).response?.data as string) || (error as Error).message
-      )
       setIsUploading(false)
       setProgress(0)
+      if ((error as AxiosError).code === 'ERR_CANCELED') return // Ignore if user cancelled the upload
+
+      const errMsg = ((error as AxiosError).response?.data as string) || (error as Error).message
+      setFileUploadError(errMsg.match(/<pre>(.*?)<\/pre>/i)?.[1].replaceAll('&#39;', "'") || errMsg) // Parse error message
     }
   }
 

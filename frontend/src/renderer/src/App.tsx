@@ -22,7 +22,7 @@ function App(): JSX.Element {
         </div>
         {/* Content */}
         {showHistory ? (
-          <History />
+          <History updateStorageSpace={updateStorageSpace} />
         ) : (
           <FileUpload
             isUploading={isUploading}
@@ -30,7 +30,7 @@ function App(): JSX.Element {
             updateStorageSpace={updateStorageSpace}
           />
         )}
-        <Footer storageResponse={storageResponse} />
+        <Footer storageResponse={storageResponse} updateStorageSpace={updateStorageSpace} />
       </main>
     </div>
   )

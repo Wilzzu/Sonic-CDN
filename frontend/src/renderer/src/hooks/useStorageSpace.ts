@@ -12,6 +12,7 @@ const useStorageSpace = (): ReturnTypes => {
   const [storageResponse, setStorageResponse] = useState<StorageResponse | 'error' | null>(null)
 
   const updateStorageSpace = async (): Promise<void> => {
+    if (storageResponse === 'error') setStorageResponse(null)
     try {
       const response = await getStorage()
       setStorageResponse(response.data as StorageResponse)

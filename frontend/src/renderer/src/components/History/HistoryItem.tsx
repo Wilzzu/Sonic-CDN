@@ -7,7 +7,13 @@ import { cn, formatBytes } from '@renderer/lib/utils'
 import { UploadedFile } from 'src/types/types'
 import Confirmation from './Confirmation'
 
-const HistoryItem: FC<{ file: UploadedFile; index: number }> = ({ file, index }): JSX.Element => {
+type HistoryItemProps = {
+  file: UploadedFile
+  index: number
+  updateStorageSpace: () => Promise<void>
+}
+
+const HistoryItem: FC<HistoryItemProps> = ({ file, index, updateStorageSpace }): JSX.Element => {
   const [isDeleted, setIsDeleted] = useState(false)
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
@@ -35,7 +41,11 @@ const HistoryItem: FC<{ file: UploadedFile; index: number }> = ({ file, index })
         </button>
         {/* Delete confirmation */}
         {showDeleteConfirmation && (
-          <Confirmation fileName={file.name} setIsDeleted={setIsDeleted} />
+          <Confirmation
+            fileName={file.name}
+            setIsDeleted={setIsDeleted}
+            updateStorageSpace={updateStorageSpace}
+          />
         )}
       </div>
       <div

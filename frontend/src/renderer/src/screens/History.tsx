@@ -1,8 +1,12 @@
 import HistoryFileList from '@renderer/components/History/HistoryFileList'
 import useFileHistory from '@renderer/hooks/useFileHistory'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
-const History = (): JSX.Element => {
+type HistoryProps = {
+  updateStorageSpace: () => Promise<void>
+}
+
+const History: FC<HistoryProps> = ({ updateStorageSpace }): JSX.Element => {
   const { getFileHistory } = useFileHistory()
   const files = useMemo(() => getFileHistory(), [])
 
@@ -14,7 +18,7 @@ const History = (): JSX.Element => {
         <div className="h-[1px] w-full bg-gradient-to-br from-secondary to-transparent" />
       </div>
       {/* Files */}
-      <HistoryFileList files={files} />
+      <HistoryFileList files={files} updateStorageSpace={updateStorageSpace} />
     </section>
   )
 }
