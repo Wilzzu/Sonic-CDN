@@ -1,7 +1,11 @@
 import fs from "fs/promises";
 import path from "path";
 
-const uploadsDir = path.join(__dirname, process.env.CDN_DIR || "cdn/");
+const uploadsDir = path.join(
+	process.env.CDN_DYNAMIC_PATH === "true" ? __dirname : "",
+	process.env.CDN_DIR || __dirname,
+	"../../cdn/"
+);
 
 export async function renameFile(oldName: string, newName: string): Promise<void> {
 	try {

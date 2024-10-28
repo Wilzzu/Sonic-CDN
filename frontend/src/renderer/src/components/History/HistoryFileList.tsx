@@ -8,7 +8,7 @@ type HistoryFileListProps = {
 }
 
 const HistoryFileList: FC<HistoryFileListProps> = ({ files, updateStorageSpace }): JSX.Element => {
-  if (files.length === 0) return <p className="pt-2">No files uploaded</p>
+  if (files.length === 0) return <p className="pt-2">No files found in history</p>
 
   return (
     <div className="w-full px-3">

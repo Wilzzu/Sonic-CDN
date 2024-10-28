@@ -11,6 +11,7 @@ router.post("/", upload.single("file"), (req: Request, res: Response): void => {
 		return;
 	}
 
+	console.log("File uploaded:", req.file.path);
 	res.status(200).json({
 		message: "File uploaded successfully",
 		uploadedFile: { fileName: req.file.filename, fileSize: req.file.size },

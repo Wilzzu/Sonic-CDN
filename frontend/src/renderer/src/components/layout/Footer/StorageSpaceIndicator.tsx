@@ -15,7 +15,11 @@ const StorageSpaceIndicator: FC<StorageSpaceIndicatorProps> = ({ storage }): JSX
       {/* Storage amount */}
       <p className="text-nowrap opacity-70 leading-none">
         Storage{' '}
-        <span className="text-[0.64rem] tracking-tight">{`(${formatBytes(spaceUsed, 0)} / ${formatBytes(storage.storageSize, 0)})`}</span>
+        <span className="text-[0.64rem] font-light">
+          {'('}
+          <span className="font-normal">{formatBytes(spaceUsed, 0)}</span> of{' '}
+          <span className="font-normal">{formatBytes(storage.storageSize, 0)}</span> used{')'}
+        </span>
       </p>
       {/* Progress bar */}
       <div className="h-full w-full flex items-center gap-[6px]">
