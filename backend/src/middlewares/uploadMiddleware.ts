@@ -7,11 +7,11 @@ import { v4 as uuidv4 } from "uuid";
 configDotenv();
 
 // Make sure the CDN directory exists
-const uploadsDir = path.join(
-	process.env.CDN_DYNAMIC_PATH === "true" ? __dirname : "",
-	process.env.CDN_DIR || __dirname,
-	"../../cdn/"
-);
+const uploadsDir =
+	process.env.CDN_DYNAMIC_PATH === "true"
+		? path.join(__dirname, process.env.CDN_DIR || "../../cdn/")
+		: path.join(process.env.CDN_DIR || "cdn/");
+
 if (!fs.existsSync(uploadsDir)) {
 	fs.mkdirSync(uploadsDir, { recursive: true });
 }
