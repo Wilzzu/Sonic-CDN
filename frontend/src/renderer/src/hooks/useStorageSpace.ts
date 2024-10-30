@@ -17,7 +17,6 @@ const useStorageSpace = (): ReturnTypes => {
       const response = await getStorage()
       setStorageResponse(response.data as StorageResponse)
     } catch (err) {
-      console.log('Error fetching storage response:', err)
       setStorageResponse('error')
     }
   }

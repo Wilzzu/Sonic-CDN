@@ -15,6 +15,20 @@ export default defineConfig({
         '@renderer': resolve('src/renderer/src')
       }
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString()
+            }
+            return null
+          },
+          minifyInternalExports: true
+        },
+        treeshake: true
+      }
+    },
     plugins: [react()]
   }
 })

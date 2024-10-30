@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import StorageSpaceIndicator from './StorageSpaceIndicator'
 import { StorageResponse } from 'src/types/types'
 import refreshIcon from '../../../assets/refresh-icon.svg'
@@ -9,10 +9,6 @@ type FooterProps = {
 }
 
 const Footer: FC<FooterProps> = ({ storageResponse, updateStorageSpace }): JSX.Element => {
-  useEffect(() => {
-    console.log('Update storage space bar:', storageResponse)
-  }, [storageResponse])
-
   return (
     <footer className="absolute bottom-3 w-full px-5 flex items-end justify-between gap-2 text-xs">
       {/* Storage space left */}

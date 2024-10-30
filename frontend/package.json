@@ -1,10 +1,10 @@
 {
   "name": "sonic-cdn",
   "version": "1.0.0",
-  "description": "An Electron application with React and TypeScript",
+  "description": "Electron app for easily uploading and deleting files from a CDN",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "Wilzzu",
+  "homepage": "https://wilzzu.dev",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

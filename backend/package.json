@@ -1,7 +1,7 @@
 {
-	"name": "backend",
+	"name": "sonic-cdn-backend",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Backend for Sonic CDN",
 	"main": "index.js",
 	"scripts": {
 		"build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
@@ -9,7 +9,8 @@
 		"dev": "nodemon -r tsconfig-paths/register src/index.ts"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Wilzzu",
+	"homepage": "https://wilzzu.dev",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/cors": "^2.8.17",

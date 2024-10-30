@@ -64,7 +64,6 @@ const UploadButton: FC<UploadButtonProps> = ({
       const response = await uploadFile(formatFile(file, fileName), onProgress, controllerRef)
 
       if (response.status === 200) {
-        console.log('File uploaded successfully:', response.data)
         setIsUploading(false)
         setProgress(100)
         const uploadedFile = {
