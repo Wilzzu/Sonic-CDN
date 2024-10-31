@@ -16,7 +16,7 @@
 - CDN storage space indicator showing used and available storage
 - Password protected file uploads
 
-![Screenshots](https://i.imgur.com/m9xiJrU.png)
+![Screenshots](https://i.imgur.com/zMTracm.png)
 
 ## Technologies Used
 
