@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 
 const uploadsDir =
-	process.env.CDN_DYNAMIC_PATH === "true"
+	process.env.CDN_RELATIVE_PATH === "true"
 		? path.join(__dirname, process.env.CDN_DIR || "../../cdn/")
 		: path.join(process.env.CDN_DIR || "cdn/");
 
