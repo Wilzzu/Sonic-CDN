@@ -117,6 +117,11 @@ All endpoints are protected with a password that must be included in the request
 - `PUT /api/file/rename` - Rename a file on the CDN. _(Not used for now)_
 - `GET /api/storage` - Retrieve CDN storage information.
 
+## Demo Version
+A demo version of the app is available in the [Demo Release](https://github.com/Wilzzu/Sonic-CDN/releases/tag/v1.0.0-demo). This version allows you to test the interface without needing your own CDN setup, but most features won't be functional.
+
+For full functionality, follow the [installation](#installation) and [build](#build) instructions to configure the app with your own CDN setup.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
